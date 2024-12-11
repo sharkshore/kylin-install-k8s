@@ -13,3 +13,11 @@ sudo kubeadm init \
 sudo kubeadm token create --print-join-comman |sed 's/^/sudo /' |tee -a join_k8s.sh
 sudo chmod +x join_k8s.sh
 
+mkdir -p $HOME/.kube
+rm -rf $HOME/.kube/config
+sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+# 去除污点
+kubectl taint nodes $(hostname) node-role.kubernetes.io/control-plane:NoSchedule-

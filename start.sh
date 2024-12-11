@@ -5,7 +5,7 @@ controller_ip="172.20.63.100"
 follower_ip_list="172.20.63.101,172.20.63.102"
 
 dir=$(basename $(dirname $(realpath $0)))
-package_file="$dir.tar.gz"
+
 
 
 
@@ -59,7 +59,7 @@ _file(){
 parent_dir=$(dirname $(realpath $0))
 # -----------------1，分发所有安装包
 for host in ${follower_ip_list//,/ };do
-    rsync -avz $parent_dir/ $host:$parent_dir
+    rsync -av $parent_dir/ $host:$parent_dir
 done
 
 
