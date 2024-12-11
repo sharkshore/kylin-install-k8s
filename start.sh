@@ -44,13 +44,7 @@ scp_file(){
     done
 }
 
-_file(){
-    local lfile=$1
-    for host in ${follower_ip_list//,/ };do
-        echo "-----${host}:"
-        scp "$lfile" "$host":~
-    done
-}
+
 
 
 
@@ -59,11 +53,12 @@ _file(){
 parent_dir=$(dirname $(realpath $0))
 # -----------------1，分发所有安装包
 for host in ${follower_ip_list//,/ };do
-    rsync -av $parent_dir/ $host:$parent_dir
+    rsync -av --delete $parent_dir/ $host:$parent_dir
 done
 
 
 # -----------------2，所有节点安装docker和k8s，并加载镜像
+bash install_package.sh
 ssh_cmd "cd ~/$dir && bash install_package.sh"
 
 # -----------------3，主节点初始化k8s集群

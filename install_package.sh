@@ -47,8 +47,8 @@ done
 
 
 k8s_dir=k8s/1.28.15/rpm
-sudo yum localinstall -y $k8s_dir/dependencies/*.rpm
-sudo yum localinstall -y $k8s_dir/*.rpm
+sudo yum localinstall --disablerepo=* -y $k8s_dir/dependencies/*.rpm
+sudo yum localinstall --disablerepo=* -y $k8s_dir/*.rpm
 
 # 重加载k8s配置，并设置开机启动
 sudo systemctl daemon-reload

@@ -10,8 +10,12 @@ sudo kubeadm init \
     --v=5
 
 
-sudo kubeadm token create --print-join-comman |sed 's/^/sudo /' |tee -a join_k8s.sh
+
+join_command=$(sudo kubeadm token create --print-join-command )
+echo "sudo $join_command --ignore-preflight-errors=all" | tee join_k8s.sh
 sudo chmod +x join_k8s.sh
+
+
 
 mkdir -p $HOME/.kube
 rm -rf $HOME/.kube/config
@@ -21,3 +25,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # 去除污点
 kubectl taint nodes $(hostname) node-role.kubernetes.io/control-plane:NoSchedule-
+
+kubectl apply -f yaml/kube-flannel-v0.26.1.yml
+
+
